@@ -1,4 +1,3 @@
-// src/components/CallbackHandler.jsx
 import React, { useEffect, useRef } from 'react'; // Import useRef
 import { useNavigate } from 'react-router-dom';
 
@@ -8,50 +7,46 @@ const CallbackHandler = () => {
   const processedRef = useRef(false);
 
   useEffect(() => {
-    // --- Check if already processed in this cycle (for StrictMode) ---
-    // If the ref is true, it means we likely already stored tokens and navigated
-    // on the first run of this effect in StrictMode. Don't do anything on the re-run.
+    // Check if the effect has already been processed (to avoid re-runs in StrictMode)
     if (processedRef.current) {
       console.log("CallbackHandler: Effect re-run skipped (processedRef is true)");
       return;
     }
-    // --- End StrictMode check ---
 
+    // Extract query parameters from the URL
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get('access_token');
     const refreshToken = params.get('refresh_token');
     const expiresIn = params.get('expires_in');
     const error = params.get('error');
 
+    // Handle error case
     if (error) {
-       console.error('Authentication error from backend:', error);
-       processedRef.current = true; // Mark as processed
-       navigate(`/auth/login?error=${encodeURIComponent(error)}`);
-       return; // Stop execution
+      console.error('Authentication error from Spotify:', error);
+      processedRef.current = true;
+      navigate(`/auth/login?error=${encodeURIComponent(error)}`);
+      return; // Exit early if there was an error
     }
 
+    // If both tokens and expiration time are found, store them
     if (accessToken && refreshToken && expiresIn) {
-      // Store tokens
+      // Store tokens in localStorage
       localStorage.setItem('spotify_access_token', accessToken);
       localStorage.setItem('spotify_refresh_token', refreshToken);
       const expiryTime = new Date().getTime() + parseInt(expiresIn, 10) * 1000;
       localStorage.setItem('spotify_token_expiry', expiryTime.toString());
       console.log('Tokens stored successfully.');
 
-      processedRef.current = true; // Mark as processed
-      navigate('/'); // Navigate to main app
+      processedRef.current = true;
+      navigate('/home' || '/'); // Redirect to the main app or dashboard
     } else {
-      // This block now only runs if tokens were genuinely missing on the FIRST run
-      // (or if error was also missing)
-      console.error('Callback handler: Missing tokens or error in URL on initial load.');
-      processedRef.current = true; // Mark as processed
-      // Navigate to login indicating a failure in the callback process
-      navigate('/auth/login?error=callback_failed_missing_tokens');
+      // If tokens or expiration time is missing
+      console.error('CallbackHandler: Missing tokens or expiration time.');
+      processedRef.current = true;
+      navigate('/auth/login?error=callback_failed_missing_tokens'); // Redirect to error page
     }
 
-  // Run only once on initial mount (in Production).
-  // Ref helps manage StrictMode's double invocation in Development.
-  }, [navigate]); // Dependency array includes navigate
+  }, [navigate]); // Only re-run if navigate changes (which is rare in this case)
 
   return <p>Processing authentication, please wait...</p>;
 };
