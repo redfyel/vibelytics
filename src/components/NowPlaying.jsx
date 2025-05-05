@@ -1,235 +1,432 @@
 // src/components/NowPlaying.jsx
 import React, { useState, useEffect, useCallback } from 'react';
-import { Heart, Play, Pause, SkipBack, SkipForward, Shuffle, Repeat, Mic2, ListMusic, Laptop2, Volume1, Volume2, VolumeX } from 'lucide-react';
-import { getCurrentPlaybackState, playTrack, pauseTrack, nextTrack, previousTrack } from '../services/spotifyService'; // Adjust path as needed
-import '../styles/nowplaying.css'; // Ensure this path is correct
+
+// Core Playback Icons (Lucide)
+import { Heart, Play, Pause, SkipBack, SkipForward, Shuffle, Repeat } from 'lucide-react';
+
+// Right Controls Icons (React Icons) & Bootstrap Components
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { FaHeadphones, FaExpand } from 'react-icons/fa';
+import { PiMicrophoneStageLight, PiMonitorPlayBold } from 'react-icons/pi';
+import { HiOutlineQueueList, HiMiniSpeakerWave } from "react-icons/hi2";
+import { CgMiniPlayer } from "react-icons/cg";
+import { IoIosArrowUp } from "react-icons/io";
+import { SlLoop } from "react-icons/sl";
+
+
+
+// Spotify Service & CSS
+import { getCurrentPlaybackState, playTrack, pauseTrack, nextTrack, previousTrack } from '../services/spotifyService'; // Adjust path
+import '../styles/nowplaying.css'; // Main CSS
+// We might need styles for the react-bootstrap overrides or the input range
+// import '../styles/rightcontrols.css'; // Optional: If specific styles are needed
 
 // Helper to format milliseconds to mm:ss
 const formatDuration = (ms) => {
-  if (typeof ms !== 'number' || ms < 0) return '0:00';
-  const totalSeconds = Math.floor(ms / 1000);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    if (typeof ms !== 'number' || ms < 0) return '0:00';
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
-const NowPlaying = () => {
-  const [playbackState, setPlaybackState] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Start loading initially
-  const [error, setError] = useState(null);
-  // Optional: State for local progress update for perceived smoothness
-  // const [displayProgressMs, setDisplayProgressMs] = useState(0);
+// NowPlaying component integrating RightControls structure
+const NowPlaying = ({
+    showNowPlayingView = false, // Prop to control sidebar view
+    onToggleNowPlayingView, // Function to toggle sidebar
+    // Manage volume internally for this example, can be props if needed
+}) => {
+    // --- State Hooks ---
+    const [playbackState, setPlaybackState] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isLiked, setIsLiked] = useState(false); // Placeholder for like status
 
-  // --- Fetch Logic using useCallback ---
-  const fetchPlaybackState = useCallback(async (isInitialLoad = false) => {
-    try {
-      const state = await getCurrentPlaybackState();
-      setPlaybackState(state); // Update the state with fetched data (or null)
-      setError(null); // Clear previous errors on success
-    } catch (err) {
-      console.error("Error fetching playback state in component:", err);
-      setError('Could not load player state.'); // Set user-friendly error
-      setPlaybackState(null); // Clear state on error
-    } finally {
-      // Only set isLoading to false after the very first attempt
-      if (isInitialLoad) {
-        setIsLoading(false);
-      }
-    }
-  }, []); // Empty dependency array: fetchPlaybackState function itself doesn't change
+    // State for Right Controls interaction
+    const [activeRightControl, setActiveRightControl] = useState(null);
 
-  // --- Effect for Initial Load and Polling ---
-  useEffect(() => {
-    console.log("NowPlaying Mounted: Fetching initial state...");
-    // Fetch immediately on mount, mark as initial load
-    fetchPlaybackState(true);
+    // Internal volume state
+    const [currentVolume, setCurrentVolume] = useState(80); // Default volume
+    const [isMuted, setIsMuted] = useState(false); // Mute state isn't directly from Spotify API easily
+    const [lastVolume, setLastVolume] = useState(80); // To restore volume after unmute
 
-    // Set up polling interval
-    const intervalId = setInterval(() => {
-      // Subsequent fetches are not the initial load
-      fetchPlaybackState(false);
-    }, 5000); // Poll every 5 seconds
+    // --- Define Right Controls Data ---
+    const rightControlsDefinition = [
+        // Use PiMonitorPlayBold for Now Playing View toggle
+        { id: 'nowplaying', icon: <PiMonitorPlayBold size={23} />, tooltip: 'Now Playing View', action: onToggleNowPlayingView },
+        { id: 'lyrics', icon: <PiMicrophoneStageLight size={23} />, tooltip: 'Lyrics', action: () => console.warn('Lyrics action not implemented') },
+        { id: 'queue', icon: <HiOutlineQueueList size={23} />, tooltip: 'Queue', action: () => console.warn('Queue action not implemented') },
+        { id: 'connect', icon: <FaHeadphones size={23} />, tooltip: 'Connect to a device', action: () => console.warn('Connect action not implemented') },
+        // Volume Slider is handled separately
+        { id: 'miniplayer', icon: <CgMiniPlayer size={23} />, tooltip: 'Miniplayer', action: () => console.warn('Miniplayer action not implemented') },
+        { id: 'fullscreen', icon: <FaExpand size={23} />, tooltip: 'Fullscreen', action: () => console.warn('Fullscreen action not implemented') },
+    ];
 
-    // Cleanup interval on component unmount
-    return () => {
-      console.log("NowPlaying Unmounted: Cleaning up interval.");
-      clearInterval(intervalId);
+    // --- Fetch Logic ---
+    const fetchPlaybackState = useCallback(async (isInitialLoad = false) => {
+        try {
+            const state = await getCurrentPlaybackState();
+            setPlaybackState(state);
+            // Sync volume if device info is present
+            if (state?.device?.volume_percent !== undefined) {
+                 const spotifyVolume = state.device.volume_percent;
+                 // Don't directly set muted state from volume 0, handle via explicit mute toggle
+                 setCurrentVolume(spotifyVolume);
+                 if (spotifyVolume > 0) setLastVolume(spotifyVolume); // Update last known volume
+            }
+            // TODO: Fetch liked status for state?.item?.id
+            setError(null);
+        } catch (err) {
+            console.error("Error fetching playback state:", err);
+            setError('Could not load player state.');
+            setPlaybackState(null);
+        } finally {
+            if (isInitialLoad) {
+                setIsLoading(false);
+            }
+        }
+    }, []);
+
+    // --- Effect for Initial Load and Polling ---
+    useEffect(() => {
+        fetchPlaybackState(true);
+        const intervalId = setInterval(() => fetchPlaybackState(false), 5000);
+        return () => clearInterval(intervalId);
+    }, [fetchPlaybackState]);
+
+    // --- Playback Control Handlers (Center) ---
+    const handlePlayPause = async () => {
+        if (!playbackState?.device?.id) return;
+        const success = playbackState.is_playing ? await pauseTrack() : await playTrack();
+        if (success) {
+            setPlaybackState(prev => prev ? ({ ...prev, is_playing: !prev.is_playing }) : null);
+            setTimeout(() => fetchPlaybackState(false), 300);
+        }
     };
-  }, [fetchPlaybackState]); // Depend only on the stable fetchPlaybackState function
+    const handleNext = async () => {
+        if (!playbackState?.device?.id) return;
+        const success = await nextTrack();
+        if (success) setTimeout(() => fetchPlaybackState(false), 300);
+    };
+    const handlePrevious = async () => {
+        if (!playbackState?.device?.id) return;
+        const success = await previousTrack();
+        if (success) setTimeout(() => fetchPlaybackState(false), 300);
+    };
+    const handleToggleShuffle = () => console.warn('Shuffle toggle not implemented'); // TODO
+    const handleToggleRepeat = () => console.warn('Repeat toggle not implemented'); // TODO
+    const handleSeek = (event) => console.warn('Seek not implemented'); // TODO
+
+    // --- Like Handler (Left) ---
+     const handleToggleLike = () => {
+        console.warn('Like toggle not implemented');
+        setIsLiked(prev => !prev);
+        // TODO: Call API to save/unsave track
+    };
+
+    // --- Right Controls Handlers ---
+    const handleRightControlClick = (id, action) => {
+        setActiveRightControl(id === activeRightControl ? null : id);
+        // Execute the associated action if provided
+        if (action && typeof action === 'function') {
+            action();
+        }
+    };
+
+    const handleVolumeInputChange = (event) => {
+        const newVolume = parseInt(event.target.value, 10);
+        setCurrentVolume(newVolume);
+        setIsMuted(newVolume === 0); // Assume mute if slider goes to 0
+        if (newVolume > 0) setLastVolume(newVolume); // Store if unmuting via slider
+        // TODO: Debounce and call Spotify API: await setVolume(newVolume);
+        console.log("Volume changed to:", newVolume); // Placeholder
+    };
+
+     // Separate Mute Toggle Logic (if needed, e.g., clicking the speaker icon)
+     const handleToggleMute = () => {
+         let newVolume;
+         if (currentVolume > 0) {
+             // Mute
+             setLastVolume(currentVolume); // Store current volume
+             newVolume = 0;
+             setIsMuted(true);
+         } else {
+             // Unmute
+             newVolume = lastVolume > 0 ? lastVolume : 50; // Restore or default
+             setIsMuted(false);
+         }
+         setCurrentVolume(newVolume);
+         // TODO: Call Spotify API: await setVolume(newVolume);
+         console.log("Toggled mute, new volume:", newVolume); // Placeholder
+     };
 
 
-  // --- Playback Control Handlers ---
-  const handlePlayPause = async () => {
-    if (!playbackState || !playbackState.device?.id) {
-      console.warn("Play/Pause: No active device found.");
-      // TODO: Add user feedback (e.g., toast notification)
-      return;
+    // --- Render Logic ---
+
+    if (isLoading) {
+        return <div className="now-playing-bar loading">Loading Player...</div>;
     }
-    const success = playbackState.is_playing ? await pauseTrack() : await playTrack();
-    if (success) {
-      // Optimistically update UI slightly faster than polling
-      setPlaybackState(prev => prev ? ({ ...prev, is_playing: !prev.is_playing }) : null);
-      // Fetch immediately after action for accurate state
-      setTimeout(() => fetchPlaybackState(false), 300);
+    // Simplified Error/Empty state for brevity - adjust as needed
+    if (error || !playbackState || !playbackState.item) {
+        return (
+             <div className={`now-playing-bar ${error ? 'error' : 'empty-item'}`}>
+                {/* You can add placeholder structure here if needed */}
+                 <span style={{ gridColumn: '1 / -1', textAlign: 'center' }}>
+                     {error || 'Spotify'}
+                 </span>
+             </div>
+        );
     }
-  };
 
-  const handleNext = async () => {
-      if (!playbackState || !playbackState.device?.id) return;
-      const success = await nextTrack();
-      if (success) setTimeout(() => fetchPlaybackState(false), 300);
-  };
+    // --- Full Player Render ---
+    const { item: track, is_playing, device, progress_ms, repeat_state, shuffle_state } = playbackState;
+    const albumImageUrl = track.album?.images?.[0]?.url || '/default_album_art.png';
+    const trackTitle = track.name || 'Unknown Track';
+    const artistName = track.artists?.map(artist => artist.name).join(', ') || 'Unknown Artist';
+    const albumName = track.album?.name || 'Unknown Album';
+    const durationMs = track.duration_ms || 0;
+    const currentProgressMs = progress_ms || 0;
+    const progressPercent = durationMs > 0 ? (currentProgressMs / durationMs) * 100 : 0;
 
-  const handlePrevious = async () => {
-      if (!playbackState || !playbackState.device?.id) return;
-      const success = await previousTrack();
-      if (success) setTimeout(() => fetchPlaybackState(false), 300);
-   };
+    // Determine volume for the slider input
+    const displayVolume = currentVolume;
 
-  // --- Render Logic ---
+    // Split controls for layout
+    const controlsBeforeVolume = rightControlsDefinition.slice(0, 4);
+    const controlsAfterVolume = rightControlsDefinition.slice(4);
 
-  // 1. Loading State (Only on initial mount)
-  if (isLoading) {
-    console.log("NowPlaying Rendering: Loading State");
-    // You can return a minimal placeholder or null
+
     return (
-        <div className="now-playing-bar loading">
-            {/* Optionally add a spinner or minimal layout */}
-            Loading Player...
-        </div>
-    );
-  }
-  if (!playbackState && !isLoading) {
-    return <div className="nowplaying-empty">No active playback</div>;
-  }
-  // 2. Empty State (If not loading, but no track/item is playing)
-  if (!playbackState || !playbackState.item) {
-     console.log("NowPlaying Rendering: Empty State (No active track)", playbackState);
-     // Render a visually distinct empty/placeholder bar
-     return (
-        <div className="now-playing-bar empty">
+        <>
+            {/* --- Bottom Now Playing Bar --- */}
+            <div className="now-playing-bar">
             <div className="now-playing-left">
-                 {/* Placeholder image/icon */}
-                 <div className="album-art placeholder"></div>
-                 <div className="track-info">
-                    <span className="track-title">-</span>
-                    <span className="artist-name">-</span>
-                 </div>
-            </div>
-            <div className="now-playing-center">
-                 <div className="player-controls">
-                     <button className="control-button icon-only secondary-control" disabled><Shuffle size={18} /></button>
-                     <button className="control-button icon-only" disabled><SkipBack size={18} /></button>
-                     <button className="control-button play-button" disabled><Play size={20} /></button>
-                     <button className="control-button icon-only" disabled><SkipForward size={18} /></button>
-                     <button className="control-button icon-only secondary-control" disabled><Repeat size={18} /></button>
-                 </div>
-                 <div className="playback-bar">
-                    <span className="time-text">0:00</span>
-                    <div className="progress-bar-wrapper">
-                        {/* Empty bar track */}
-                    </div>
-                    <span className="time-text">0:00</span>
-                 </div>
-            </div>
-            <div className="now-playing-right">
-                 {/* Placeholder/disabled controls */}
-                 <button className="control-button icon-only" disabled><Mic2 size={18} /></button>
-                 <button className="control-button icon-only" disabled><ListMusic size={18} /></button>
-                 <button className="control-button icon-only" disabled><Laptop2 size={18} /></button>
-                 <div className="volume-control">
-                     <button className="control-button icon-only" disabled><Volume1 size={18} /></button>
-                     <div className="progress-bar-wrapper volume-slider"></div>
-                 </div>
-            </div>
-        </div>
-     );
-   }
+  <div className="album-wrapper">
+    <img src={albumImageUrl} alt={albumName} className="album-art" />
 
-  // 3. Full Player Bar (Loading finished, and a track item exists)
-  // console.log("NowPlaying Rendering: Full Player Bar", playbackState);
-  const { item: track, is_playing, device, progress_ms, repeat_state, shuffle_state } = playbackState;
-  // Safely access properties with fallbacks
-  const albumImageUrl = track?.album?.images?.[0]?.url || '/default_album_art.png'; // Have a default image in public folder
-  const trackTitle = track?.name || 'Unknown Track';
-  const artistName = track?.artists?.map(artist => artist.name).join(', ') || 'Unknown Artist';
-  const durationMs = track?.duration_ms || 0;
-  const currentProgressMs = progress_ms || 0;
-  const progressPercent = durationMs > 0 ? (currentProgressMs / durationMs) * 100 : 0;
-  // TODO: Add state and logic for liked status, volume, shuffle, repeat
-
-  return (
-    <div className="now-playing-bar">
-      {/* Left Section: Track Info */}
-      <div className="now-playing-left">
-        <img src={albumImageUrl} alt={track?.album?.name || 'Album art'} className="album-art" />
-        <div className="track-info">
-          {/* TODO: Make these links if desired */}
-          <span className="track-title">{trackTitle}</span>
-          <span className="artist-name">{artistName}</span>
-        </div>
-        {/* TODO: Add is_liked state and onClick handler */}
-        <button className="control-button icon-only like-button">
-          <Heart size={18} />
-        </button>
-      </div>
-
-      {/* Center Section: Playback Controls & Progress */}
-      <div className="now-playing-center">
-        <div className="player-controls">
-          {/* TODO: Add shuffle toggle logic and active class */}
-          <button className={`control-button icon-only secondary-control ${shuffle_state ? 'active' : ''}`}>
-            <Shuffle size={18} />
-          </button>
-          <button className="control-button icon-only" onClick={handlePrevious} title="Previous">
-            <SkipBack size={18} />
-          </button>
-          <button className="control-button play-button" onClick={handlePlayPause} title={is_playing ? 'Pause' : 'Play'}>
-            {is_playing ? <Pause size={20} /> : <Play size={20} />}
-          </button>
-          <button className="control-button icon-only" onClick={handleNext} title="Next">
-            <SkipForward size={18} />
-          </button>
-          {/* TODO: Add repeat toggle logic and active class (handle different repeat states: off, context, track) */}
-          <button className={`control-button icon-only secondary-control ${repeat_state !== 'off' ? 'active' : ''}`}>
-            <Repeat size={18} />
-          </button>
-        </div>
-        <div className="playback-bar">
-           <span className="time-text">{formatDuration(currentProgressMs)}</span>
-           {/* TODO: Add seeking functionality to the progress bar */}
-           <div className="progress-bar-wrapper" title="Seek">
-             <div className="progress-bar" style={{ width: `${progressPercent}%` }}>
-                <div className="progress-handle"></div>
-             </div>
-           </div>
-           <span className="time-text">{formatDuration(durationMs)}</span>
-        </div>
-      </div>
-
-      {/* Right Section: Other Controls */}
-      <div className="now-playing-right">
-        {/* TODO: Add onClick handlers */}
-        <button className="control-button icon-only" title="Lyrics"><Mic2 size={18} /></button>
-        <button className="control-button icon-only" title="Queue"><ListMusic size={18} /></button>
-        {/* TODO: Add device selection popup */}
-        <button className="control-button icon-only" title="Connect to a device"><Laptop2 size={18} /></button>
-        {/* TODO: Add volume control logic */}
-        <div className="volume-control">
-          <button className="control-button icon-only" title="Mute">
-            {/* TODO: Change icon based on volume level */}
-            <Volume2 size={18} />
-          </button>
-          <div className="progress-bar-wrapper volume-slider" title="Volume">
-             {/* TODO: Add volume slider interaction */}
-             <div className="progress-bar" style={{ width: `${device?.volume_percent || 80}%` }}> {/* Use actual volume */}
-                 <div className="progress-handle"></div>
-             </div>
-          </div>
-        </div>
-      </div>
+    {/* Expand Arrow on Hover */}
+    <div className="phover-icon">
+      <OverlayTrigger
+        placement="top"
+        overlay={<Tooltip id="tooltip-expand">Expand</Tooltip>}
+      >
+        <IoIosArrowUp />
+      </OverlayTrigger>
     </div>
-  );
+  </div>
+
+  <div className="track-info">
+    <span className="track-title hover-link" title={trackTitle}>
+      {trackTitle}
+    </span>
+    <span className="artist-name hover-link" title={artistName}>
+      {artistName}
+    </span>
+  </div>
+
+  {/* Action Buttons , -, +) */}
+  <div className="left-icon-buttons">
+    <OverlayTrigger
+      placement="top"
+      overlay={<Tooltip id="tooltip-hide">Hide</Tooltip>}
+    >
+      <Button variant="outline-light" className="left-circle-icon-btn">
+        −
+      </Button>
+    </OverlayTrigger>
+
+    <OverlayTrigger
+      placement="top"
+      overlay={<Tooltip id="tooltip-like">Add to Liked Songs</Tooltip>}
+    >
+      <Button variant="outline-light" className="left-circle-icon-btn">
+        +
+      </Button>
+    </OverlayTrigger>
+
+  </div>
+</div>
+
+
+                {/* Center Section (Keep as before) */}
+                <div className="now-playing-center">
+                <div className="player-controls">
+  <OverlayTrigger
+    placement="top"
+    overlay={<Tooltip id="tooltip-shuffle">Shuffle</Tooltip>}
+  >
+    <button
+      className={`control-button icon-only secondary-control ${shuffle_state ? 'active' : ''}`}
+      onClick={handleToggleShuffle}
+      title={`Shuffle ${shuffle_state ? 'on' : 'off'}`}
+    >
+      <Shuffle size={18} />
+    </button>
+  </OverlayTrigger>
+
+  <OverlayTrigger
+    placement="top"
+    overlay={<Tooltip id="tooltip-previous">Previous</Tooltip>}
+  >
+    <button
+      className="control-button icon-only"
+      onClick={handlePrevious}
+      title="Previous"
+    >
+      <SkipBack size={18} fill="currentColor" />
+    </button>
+  </OverlayTrigger>
+
+  <OverlayTrigger
+    placement="top"
+    overlay={
+      <Tooltip id="tooltip-play-pause">{is_playing ? 'Pause' : 'Play'}</Tooltip>
+    }
+  >
+    <button
+      className="control-button play-button"
+      onClick={handlePlayPause}
+      title={is_playing ? 'Pause' : 'Play'}
+    >
+      {is_playing ? (
+        <Pause size={20} fill="currentColor" />
+      ) : (
+        <Play size={20} fill="currentColor" />
+      )}
+    </button>
+  </OverlayTrigger>
+
+  <OverlayTrigger
+    placement="top"
+    overlay={<Tooltip id="tooltip-next">Next</Tooltip>}
+  >
+    <button
+      className="control-button icon-only"
+      onClick={handleNext}
+      title="Next"
+    >
+      <SkipForward size={18} fill="currentColor" />
+    </button>
+  </OverlayTrigger>
+
+  <OverlayTrigger
+    placement="top"
+    overlay={
+      <Tooltip id="tooltip-repeat">
+        {repeat_state === 'track'
+          ? 'Repeat Track'
+          : repeat_state === 'context'
+          ? 'Repeat Playlist'
+          : 'Repeat Off'}
+      </Tooltip>
+    }
+  >
+    <button
+      className={`control-button icon-only secondary-control ${repeat_state !== 'off' ? 'active' : ''}`}
+      onClick={handleToggleRepeat}
+      title={`Repeat ${repeat_state}`}
+    >
+      <SlLoop size={18} />
+    </button>
+  </OverlayTrigger>
+</div>
+
+                     <div className="playback-bar">
+                         <span className="time-text">{formatDuration(currentProgressMs)}</span>
+                         {/* Using the div-based progress bar for better styling control */}
+                         <div className="pprogress-bar-wrapper" title="Seek" onClick={handleSeek}>
+                             <div className="pprogress-bar" style={{ width: `${progressPercent}%` }}>
+                                 <div className="pprogress-handle"></div>
+                             </div>
+                         </div>
+                         <span className="time-text">{formatDuration(durationMs)}</span>
+                     </div>
+                </div>
+
+                {/* Right Section (Using RightControls Structure) */}
+                <div className="now-playing-right"> {/* Use the same class for CSS targeting */}
+                    {/* Controls Before Volume */}
+                    {controlsBeforeVolume.map(({ id, icon, tooltip, action }) => (
+                        <OverlayTrigger key={id} placement="top" overlay={<Tooltip id={`tooltip-${id}`}>{tooltip}</Tooltip>}>
+                            {/* Special handling for Now Playing View button's active state */}
+                            <Button
+                                variant="link"
+                                className={`icon-btn ${
+                                    (id === 'nowplaying' && showNowPlayingView) || // Active if sidebar is shown
+                                    (id !== 'nowplaying' && activeRightControl === id) // Active if clicked (for others)
+                                    ? 'active' : ''}`}
+                                onClick={() => handleRightControlClick(id, action)}
+                            >
+                                {icon}
+                            </Button>
+                        </OverlayTrigger>
+                    ))}
+
+                    {/* Volume Control */}
+                    <div className="volume-control"> {/* Keep this wrapper class if CSS uses it */}
+                         {/* Optional: Make speaker icon clickable for mute */}
+                         <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-mute">{displayVolume === 0 ? 'Unmute' : 'Mute'}</Tooltip>}>
+                            <Button variant='link' className='icon-btn volume-icon-button' onClick={handleToggleMute}>
+                                <HiMiniSpeakerWave size={23} />
+                            </Button>
+                         </OverlayTrigger>
+                         <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={displayVolume}
+                            onChange={handleVolumeInputChange}
+                            className="volume-slider" // Target this with CSS
+                            aria-label="Volume"
+                         />
+                    </div>
+
+                    {/* Controls After Volume */}
+                    {controlsAfterVolume.map(({ id, icon, tooltip, action }) => (
+                        <OverlayTrigger key={id} placement="top" overlay={<Tooltip id={`tooltip-${id}`}>{tooltip}</Tooltip>}>
+                            <Button
+                                variant="link"
+                                className={`icon-btn ${activeRightControl === id ? 'active' : ''}`}
+                                onClick={() => handleRightControlClick(id, action)}
+                            >
+                                {icon}
+                            </Button>
+                        </OverlayTrigger>
+                    ))}
+                </div>
+            </div>
+
+            {/* --- Right Now Playing View (Sidebar Content - Keep as before) --- */}
+            {showNowPlayingView && track && (
+                <div className="now-playing-view">
+                    {/* (Structure from previous answer: npv-header, npv-content, npv-art, etc.) */}
+                    <div className="npv-header">
+                        <span>{albumName}</span>
+                        <button className="control-button icon-only" onClick={onToggleNowPlayingView} title="Close">
+                           ×
+                        </button>
+                    </div>
+                    <div className="npv-content">
+                         <img src={albumImageUrl} alt={albumName} className="npv-art" />
+                         <div className="npv-track-info">
+                             <span className="npv-title hover-link" title={trackTitle}>{trackTitle}</span>
+                             <span className="npv-artist hover-link" title={artistName}>{artistName}</span>
+                         </div>
+                         <button
+                             className={`control-button icon-only npv-like-button ${isLiked ? 'active' : ''}`}
+                             onClick={handleToggleLike}
+                             title={isLiked ? 'Remove from Your Library' : 'Save to Your Library'}
+                         >
+                             <Heart size={22} fill={isLiked ? 'currentColor' : 'none'}/>
+                         </button>
+                    </div>
+                    <div className="npv-footer">
+                         {device && <span className="npv-device-info"><FaHeadphones size={14} /> {device.name}</span> } {/* Use FaHeadphones */}
+                    </div>
+                </div>
+            )}
+        </>
+    );
 };
 
 export default NowPlaying;

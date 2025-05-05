@@ -18,7 +18,7 @@
 }
 
 /* Show play button on hover */
-.top-grid-card:hover .play-button {
+.top-grid-card:hover .tplay-button {
   opacity: 1;
   transform: translateY(0); /* Move into view */
 }
@@ -43,7 +43,7 @@
 }
 
 /* Play Button (Initially hidden/off-screen) */
-.top-grid-card .play-button {
+.top-grid-card .tplay-button {
   position: absolute;
   right: 8px;
   bottom: 8px;
@@ -63,10 +63,10 @@
   cursor: pointer;
   z-index: 2; /* Above other content */
 }
-.top-grid-card .play-button:hover {
+.top-grid-card .tplay-button:hover {
    transform: scale(1.06); /* Scale effect */
 }
-.top-grid-card .play-button svg {
+.top-grid-card .tplay-button svg {
     position: relative;
     left: 1px; /* Nudge play icon */
 }

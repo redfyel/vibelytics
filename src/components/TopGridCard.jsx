@@ -22,7 +22,7 @@ const TopGridCard = ({ item }) => {
                 className="top-grid-card-image"
             />
             <span className="top-grid-card-title">{title}</span>
-            <button className="play-button" aria-label={`Play ${title}`}>
+            <button className="tplay-button" aria-label={`Play ${title}`}>
                 <FaPlay size={16} />
             </button>
         </Link>

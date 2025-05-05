@@ -16,3 +16,10 @@ body {
     color: inherit;
   }
   
+  /* Remove arrow */
+.tooltip .tooltip-arrow {
+  display: none !important;
+}
+.tooltip {
+  font-weight: 500;
+}

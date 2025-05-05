@@ -83,7 +83,7 @@
   font-weight: 400;
   color: #b3b3b3;
 }
-.track-info a:hover, /* If you make them links */
+.track-title:hover, /* If you make them links */
 .artist-name:hover {
    text-decoration: underline;
    color: #ffffff;
@@ -159,8 +159,8 @@
 
 /* Main Play/Pause button */
 .play-button {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #ffffff !important;
+  color: #000000 !important;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -171,24 +171,17 @@
   color: #000000;
 }
 .play-button svg {
-  width: 16px; /* Smaller icon inside */
+  width: 16px; 
   height: 16px;
-  /* Need slight adjustment for perfect centering */
   position: relative;
   left: 0.5px; /* Nudge play icon right */
 }
 .play-button svg:first-child[aria-label="pause"] { /* If using aria-label */
-   left: 0; /* No nudge for pause */
+   left: 0; 
 }
 
 
-/* Playback Progress Bar */
-.playback-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-}
+
 
 .time-text {
   font-size: 0.75rem; /* 12px */
@@ -196,60 +189,6 @@
   min-width: 40px; /* Ensure space for time */
   text-align: center;
   user-select: none; /* Prevent text selection */
-}
-
-.progress-bar-wrapper {
-  flex-grow: 1;
-  height: 12px; /* Interaction area height */
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  position: relative; /* For handle positioning */
-}
-
-/* The background track of the progress bar */
-.progress-bar-wrapper::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100%;
-    height: 4px;
-    background-color: #535353; /* Darker grey track */
-    border-radius: 2px;
-}
-
-/* The actual progress indicator */
-.progress-bar {
-  height: 4px;
-  background-color: #b3b3b3; /* Subdued progress color */
-  border-radius: 2px;
-  position: relative;
-  transition: background-color 0.2s ease; /* Smooth color change on hover */
-}
-
-/* Green progress and handle visibility on hover */
-.progress-bar-wrapper:hover .progress-bar {
-  background-color: var(--spotify-green, #1db954);
-}
-.progress-bar-wrapper:hover .progress-handle {
-  opacity: 1;
-}
-
-/* The draggable handle (circle) */
-.progress-handle {
-  width: 12px;
-  height: 12px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  position: absolute;
-  right: 0; /* Position at the end of the progress bar */
-  top: 50%;
-  transform: translate(50%, -50%); /* Center handle on the end */
-  opacity: 0; /* Hidden by default */
-  transition: opacity 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Slight shadow */
 }
 
 /* --- Right Section Elements --- */
@@ -264,14 +203,6 @@
   width: 125px; /* Fixed width for volume slider area */
 }
 
-.volume-control .control-button {
-    width: 32px; /* Ensure button size is consistent */
-    height: 32px;
-}
-
-.volume-control .progress-bar-wrapper {
-   width: 100%; /* Take remaining space in volume-control */
-}
 
 /* Placeholder/Empty State */
 .now-playing-bar.empty {
@@ -282,10 +213,7 @@
    color: #535353;
    cursor: not-allowed;
 }
-.now-playing-bar.empty .play-button {
-   background-color: #535353;
-   color: #282828;
-}
+
 .now-playing-bar.empty .progress-bar {
     background-color: #404040;
 }
@@ -300,4 +228,317 @@
 /* Define Spotify Green Variable */
 :root {
     --spotify-green: #1DB954;
+}
+
+
+/* --- RIGHT CONTROLS STYLING --- */
+.now-playing-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px; /* Adjust gap as needed */
+  min-width: 180px; /* Or adjust */
+}
+
+/* Style the react-bootstrap buttons */
+.now-playing-right .icon-btn {
+  background: none !important;
+  border: none !important;
+  color: #b3b3b3; /* Default icon color */
+  padding: 4px !important; /* Adjust padding */
+  line-height: 1;
+  box-shadow: none !important; /* Remove bootstrap shadows */
+  transition: color 0.2s ease;
+  display: flex; /* Ensure icon is centered if needed */
+  align-items: center;
+  justify-content: center;
+}
+.now-playing-right .icon-btn:hover,
+.now-playing-right .icon-btn:focus {
+  color: #fff; /* White on hover/focus */
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.now-playing-right .icon-btn.active {
+  color: #1db954; /* Spotify green for active state */
+}
+
+
+.now-playing-right .volume-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.now-playing-right .volume-icon {
+  color: #B3B3B3;
+}
+
+.now-playing-right .volume-slider {
+  width: 90px;
+  height: 4px;
+  background: transparent;
+  accent-color: #fff;
+  cursor: pointer;
+}
+
+.now-playing-right .volume-slider:hover {
+  accent-color: #1ED760;
+}
+
+
+
+/* Ensure other react-bootstrap button styles don't interfere */
+.now-playing-right Button.btn-link:focus,
+.now-playing-right Button.btn-link:active {
+  box-shadow: none !important;
+  border-color: transparent !important;
+}/* src/styles/nowplaying.css */
+
+/* Define Spotify Green Variable */
+:root {
+  --spotify-green: #1DB954;
+}
+
+/* Base Now Playing Bar styles (keep existing) */
+.now-playing-bar {
+background-color: #181818;
+color: #ffffff;
+height: 90px;
+width: 100%;
+display: flex; /* Use flex directly on the bar */
+align-items: center;
+justify-content: space-between;
+padding: 0 16px;
+border-top: 1px solid #282828;
+box-sizing: border-box;
+font-family: "Circular Std", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Layout Sections (keep existing flex setup) */
+.now-playing-left {
+flex: 1 1 30%;
+display: flex;
+align-items: center;
+gap: 12px;
+justify-content: flex-start;
+min-width: 180px;
+}
+.now-playing-center {
+flex: 1 1 40%;
+display: flex; /* Use flex here */
+flex-direction: column;
+align-items: center; /* Center items horizontally */
+justify-content: center;
+gap: 4px;
+max-width: 720px;
+}
+.now-playing-right {
+flex: 1 1 30%;
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 2px; /* Use the smaller gap from previous correct answer */
+min-width: 180px;
+}
+
+
+/* Use .active class for liked state */
+.like-button.active svg {
+ fill: var(--spotify-green);
+ color: var(--spotify-green);
+}
+
+
+/* --- Center Section Elements (keep existing) --- */
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.control-button { /* Base styles for Lucide buttons */
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.1s ease-out;
+}
+.control-button:not(:disabled):hover { color: #ffffff; }
+.control-button.icon-only { width: 32px; height: 32px; }
+.secondary-control { position: relative; } /* Needed for dot */
+.secondary-control svg { width: 18px; height: 18px; }
+.secondary-control.active { color: var(--spotify-green); }
+.secondary-control.active::after { /* Green dot indicator */
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--spotify-green);
+  position: absolute;
+  bottom: 0px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* --- Playback/Volume Progress Bar (DIV Structure) --- */
+.playback-bar {
+display: flex;
+align-items: center;
+gap: 8px;
+width: 100%;
+accent-color: #fff;;
+}
+.time-text {
+font-size: 0.75rem; /* 12px */
+color: #b3b3b3;
+min-width: 40px;
+text-align: center;
+user-select: none;
+}
+
+.pprogress-bar-wrapper {
+flex-grow: 1; /* Takes available space */
+height: 12px; /* Interaction area height */
+display: flex;
+align-items: center;
+accent-color: #fff;
+cursor: pointer;
+position: relative; /* For track ::before and handle */
+border-radius: 2px; /* Apply radius to wrapper for ::before clipping */
+overflow: hidden; /* Clip the ::before element */
+}
+
+/* The background track using ::before */
+.pprogress-bar-wrapper::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 4px;
+  background-color: #535353; /* Darker grey track */
+  border-radius: 2px; /* Match wrapper */
+}
+
+
+/* The actual progress indicator */
+.pprogress-bar {
+height: 4px;
+background-color: #fff; 
+accent-color:  #fff !important;
+border-radius: 2px;
+position: relative; 
+z-index: 1; /* Ensure it's above the ::before track */
+transition: background-color 0.1s ease; /* Smooth color change */
+}
+.phover-icon {
+  position: absolute;
+  bottom: 10%; 
+  left: 70%; 
+  transform: translate(-50%, -50%); 
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #FFFFFF;
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.album-wrapper:hover .phover-icon {
+  opacity: 1;
+}
+/* Green progress and handle visibility on wrapper hover */
+.pprogress-bar-wrapper:hover .pprogress-bar {
+background-color: var(--spotify-green);
+}
+.pprogress-bar-wrapper:hover .progress-handle {
+opacity: 1;
+}
+
+/* The draggable handle (circle) */
+.pprogress-handle {
+width: 12px;
+height: 12px;
+background-color: #ffffff;
+border-radius: 50%;
+position: absolute;
+right: 0; /* Position at the end of the progress bar */
+top: 50%;
+transform: translate(50%, -50%); /* Center handle */
+opacity: 0; /* Hidden by default */
+transition: opacity 0.2s ease;
+box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+z-index: 2; /* Above progress bar */
+}
+
+/* --- Right Section Styling (React Bootstrap Buttons) --- */
+
+/* Base button style - overrides Bootstrap */
+.now-playing-right .icon-btn {
+  background: none !important;
+  border: none !important;
+  color: #b3b3b3;
+  padding: 4px !important;
+  line-height: 1;
+  box-shadow: none !important;
+  transition: color 0.1s ease; /* Faster transition */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Needed for the green dot ::after */
+  outline: none !important; /* Remove default outline */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+
+/* Hover state */
+.now-playing-right .icon-btn:hover,
+.now-playing-right .icon-btn:focus {
+  color: #fff;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important; /* Ensure no outline on focus */
+}
+
+/* Active click state - PREVENT BLUE FLASH */
+.now-playing-right .icon-btn:active {
+  color: #fff !important; /* Keep color white during click */
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transform: none !important; /* Prevent any bootstrap click-down effect */
+}
+
+/* Active state (toggled on) - Green color and dot */
+.now-playing-right .icon-btn.active {
+  color: var(--spotify-green);
+}
+
+/* Green dot for active right-side buttons */
+.now-playing-right .icon-btn.active::after {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--spotify-green);
+  position: absolute;
+  bottom: -2px; /* Adjust vertical position below icon */
+  left: 50%;
+  transform: translateX(-50%);
 }
