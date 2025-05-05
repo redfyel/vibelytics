@@ -148,7 +148,7 @@ const MoodForecast = () => {
   return (
     <div className="mood-forecast-container">
       {/* Optionally indicate the source */}
-      <h2 className="mood-forecast-title">🎧 Your Vibe Forecast <span className="mood-source-indicator">(Based on {analysisSource})</span></h2>
+      <h2 className="mood-forecast-title">🎧 Your Vibelytics <span className="mood-source-indicator">(Based on {analysisSource})</span></h2>
 
 
       <div className="mood-bars">
