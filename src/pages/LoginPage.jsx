@@ -11,11 +11,16 @@ const LoginPage = () => {
     const clientId = import.meta.env.VITE_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_REDIRECT_URI;
     const scope = [
-      'user-library-read',
       'user-read-private',
       'user-read-email',
-      'user-read-recently-played',
-      'user-top-read',
+      'user-top-read', // Needed for getTopTracks
+      'user-read-recently-played', // Needed for getRecentlyPlayedTracks
+      'user-library-read',
+      'playlist-read-private', // Needed for getUserPlaylists
+      'user-read-playback-state', // Needed for getCurrentPlaybackState, etc.
+      'user-modify-playback-state', // Needed for playback controls
+      'user-read-currently-playing' // Needed for getCurrentPlaybackState
+
     ].join(' ');
     const responseType = 'code'; 
 
