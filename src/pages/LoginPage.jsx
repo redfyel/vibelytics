@@ -13,14 +13,13 @@ const LoginPage = () => {
     const scope = [
       'user-read-private',
       'user-read-email',
-      'user-top-read', // Needed for getTopTracks
-      'user-read-recently-played', // Needed for getRecentlyPlayedTracks
+      'user-top-read', 
+      'user-read-recently-played', 
       'user-library-read',
-      'playlist-read-private', // Needed for getUserPlaylists
-      'user-read-playback-state', // Needed for getCurrentPlaybackState, etc.
-      'user-modify-playback-state', // Needed for playback controls
-      'user-read-currently-playing' // Needed for getCurrentPlaybackState
-
+      'playlist-read-private', 
+      'user-read-playback-state', 
+      'user-modify-playback-state', 
+      'user-read-currently-playing' 
     ].join(' ');
     const responseType = 'code'; 
 
