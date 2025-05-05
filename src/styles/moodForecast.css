@@ -1,18 +1,16 @@
 /* src/styles/moodForecast.css */
 
-/* --- Modal Styling Override --- */
-/* Add a custom class to Modal in JSX if needed: <Modal className="mood-modal-spotifyish" ...> */
 .modal-dialog.mood-modal-spotifyish .modal-content {
-    background-color: #282828; /* Dark grey background */
+    background-color: #282828; 
     color: var(--text-base, #ffffff);
-    border-radius: 8px; /* Consistent rounding */
+    border-radius: 8px; 
     border: none;
     box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3), 0 6px 8px rgba(0, 0, 0, 0.2);
-    font-family: var(--spotify-font-family, "Circular Std", sans-serif); /* Apply font */
+    font-family: var(--spotify-font-family, "Circular Std", sans-serif); 
   }
   
   .modal-dialog.mood-modal-spotifyish .modal-header {
-    background-color: #181818; /* Slightly darker header */
+    background-color: #181818; 
     border-bottom: 1px solid var(--essential-subdued, #404040);
     padding: 16px 24px;
     border-top-left-radius: 8px;
@@ -20,27 +18,26 @@
   }
   
   .modal-dialog.mood-modal-spotifyish .modal-title {
-    font-size: 1.25rem; /* 20px */
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-base, #ffffff);
   }
   
   .modal-dialog.mood-modal-spotifyish .modal-header .btn-close {
-    /* Style the close button */
-    filter: brightness(0) invert(1); /* Make Bootstrap's default X white */
+    filter: brightness(0) invert(1);
     opacity: 0.7;
     transition: opacity 0.2s ease;
-    background-size: 12px; /* Make X smaller */
+    background-size: 12px;
   }
   .modal-dialog.mood-modal-spotifyish .modal-header .btn-close:hover {
     opacity: 1;
   }
   .modal-dialog.mood-modal-spotifyish .modal-header .btn-close:focus {
-    box-shadow: none; /* Remove Bootstrap focus */
+    box-shadow: none;
   }
 
   .mood-forecast-sutitle {
-    font-size: 1rem; /* 16px */
+    font-size: 1rem;
     font-weight: 500;
     color: var(--text-subdued, #b3b3b3);
     text-align: center;
@@ -51,24 +48,22 @@
   }
   
   .modal-dialog.mood-modal-spotifyish .modal-body {
-    padding: 24px 32px; /* Generous padding */
-    background-color: #181818; /* Match header or keep content bg */
+    padding: 24px 32px;
+    background-color: #181818; 
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
   
   
-  /* --- Mood Forecast Content Styling --- */
   .mood-forecast-container {
     color: var(--text-base, #ffffff);
     font-family: var(--spotify-font-family, "Circular Std", sans-serif);
-    padding: 16px; /* Internal padding */
-    /* Removed max-width, bg, rounded - handled by modal now */
+    padding: 16px;
   }
   
   .mood-forecast-title {
-    font-size: 1.75rem; /* 28px */
-    font-weight: 900; /* Extra bold */
+    font-size: 1.75rem;
+    font-weight: 900; 
     text-align: center;
     margin-bottom: 24px;
     color: var(--text-base, #ffffff);
@@ -80,18 +75,18 @@
     margin-bottom: 24px;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Space between bars */
+    gap: 10px; 
   }
   
   .mood-bar-item {
     display: flex;
     align-items: center;
-    gap: 12px; /* Gap between elements */
-    font-size: 0.875rem; /* 14px */
+    gap: 12px; 
+    font-size: 0.875rem;
   }
   
   .mood-bar-label {
-    width: 100px; /* Fixed width for labels */
+    width: 100px;
     flex-shrink: 0;
     text-align: right;
     color: var(--text-subdued, #b3b3b3);
