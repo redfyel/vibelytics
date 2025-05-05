@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/SideBar';
 import BottomControls from '../components/BottomControls';
 import CenterPanel from '../components/CentralPanel';
 import NowPlaying from '../components/NowPlaying';
