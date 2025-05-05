@@ -16,7 +16,7 @@ import ProfileMenu from "./ProfileMenu"; // Ensure path is correct
 import moodIcon from '../assets/image_001.svg'
 
 const loginWithSpotify = () => {
-  window.location.href = "http://localhost:8888/auth/login";
+  window.location.href = "https://vibelytics.onrender.com/auth/login";
 };
 
 // Accept props from Home: isLoggedIn, userInfo, onLogout

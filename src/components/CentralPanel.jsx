@@ -14,7 +14,7 @@ import {
 } from '../services/spotifyService'; // Adjust path
 
 // Base URL for generic data (LoggedOut view)
-const API_BASE_URL = 'http://localhost:8888/api/spotify';
+const API_BASE_URL = 'https://vibelytics.onrender.com/api/spotify';
 
 // Helper function for greeting (LoggedIn view)
 const getGreeting = () => {

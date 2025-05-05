@@ -2,7 +2,7 @@
 import axios from 'axios'; 
 
 export const loginWithSpotify = () => {
-    window.location.href = 'http://localhost:8888/auth/login';
+    window.location.href = 'https://vibelytics.onrender.com/auth/login';
   };
 
 // Add a request interceptor
@@ -188,7 +188,7 @@ export const handleLoginCallback = () => {
     }
   
     try {
-      const response = await fetch(`http://localhost:8888/auth/refresh_token?refresh_token=${refreshToken}`);
+      const response = await fetch(`https://vibelytics.onrender.com/auth/refresh_token?refresh_token=${refreshToken}`);
       const data = await response.json();
       const { access_token, expires_in } = data;
   
