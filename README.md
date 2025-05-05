@@ -1,12 +1,27 @@
-# React + Vite
+# 🎧 Vibelytics: Your Mood, Your Music, Visualized
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Vibelytics is a **Spotify-powered mood analytics tool** that transforms your listening habits into visual insights. Whether you're riding a wave of hype, mellowing out, or cruising through a happy zone, Vibelytics shows your **Weekly Vibe Forecast** and suggests how to **Amplify, Stabilize, or Shake Up** your musical journey.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🔮 Features
 
-## Expanding the ESLint configuration
+- 🎵 **Weekly Vibe Forecast** – Visual mood breakdown (Happy, Mellow, Hype) based on Spotify track data  
+- 📊 **Mood Bar Visualization** – Dynamic charts showing emotional trends in your recent plays  
+- 🔁 **Mood Actions** – Tap into Amplify, Stabilize, or Vibe Curveball playlists  
+- 🎧 **Genre Analysis** – See what genres dominate your mood  
+- 💡 **Personal Suggestions** – Get music recs to shape your vibe  
+- 🔐 **Spotify Login Integration** – Secure authentication and live user data fetch  
+- 📱 **Responsive UI** – Clean, modern design adaptable across screens
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Screenshots
+![vibe](https://github.com/user-attachments/assets/2927e90c-425e-4fc9-bbc6-30ebefd2e00a)
+
+![vibe2](https://github.com/user-attachments/assets/66df3795-5a05-44b4-b588-b3b9cdc5781d)
+
+## Get Started
+- Login with your Spotify credentials into vibelytics.
+- Click on the "vibelytics" button on the header and watch the magic!
+
