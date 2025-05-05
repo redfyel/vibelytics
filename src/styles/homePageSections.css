@@ -1,0 +1,120 @@
+/* src/styles/homePageSections.css */
+
+.spotify-section {
+  margin-bottom: 24px;
+  position: relative; /* Needed for absolute positioning of arrows */
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 4px; /* Slight padding if needed */
+}
+
+.section-title {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+.title-link {
+  color: inherit; /* Inherit color from parent */
+  text-decoration: none;
+}
+
+.title-link:hover {
+  text-decoration: underline;
+}
+
+.show-all-link {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 700;
+  color: var(--text-subdued, #a7a7a7); /* Use your subdued text color variable or value */
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-decoration: underline;
+}
+
+
+/* Wrapper for card grid and arrows */
+.section-content {
+  position: relative; /* Context for arrow positioning */
+}
+
+.card-grid {
+  /* --- Core Horizontal Layout --- */
+  display: flex; /* Arrange children (cards) in a row */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent text wrapping within the flex context (though less critical for cards) */
+  padding-bottom: 10px; /* Add space at the bottom to avoid cutting off shadows/content */
+  margin-bottom: -10px; /* Counteract padding-bottom visually if needed */
+
+  /* --- Spacing Between Cards --- */
+  gap: 16px; /* Adjust spacing as needed */
+
+  /* --- Smooth Scrolling --- */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+
+  /* --- Hide Scrollbar --- */
+  /* Standard */
+  scrollbar-width: none; /* Firefox */
+  /* Webkit (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Style for the scroll arrows */
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: rgba(25, 20, 20, 0.7); /* Semi-transparent background */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  padding: 0; /* Reset padding */
+}
+
+.scroll-arrow:hover {
+  background-color: rgba(25, 20, 20, 0.9); /* Darken on hover */
+  transform: translateY(-50%) scale(1.1); /* Slight scale effect */
+}
+
+.scroll-arrow.left-arrow {
+  left: -10px; /* Position just outside the content area */
+}
+
+.scroll-arrow.right-arrow {
+  right: -10px; /* Position just outside the content area */
+}
+
+/* Show arrows only when the section is hovered AND the arrow should be visible */
+.spotify-section:hover .scroll-arrow.left-arrow,
+.spotify-section:hover .scroll-arrow.right-arrow {
+  /* The actual visibility is controlled by React state adding/removing the element. */
+  /* This rule ensures they become visible *when hovered* if rendered */
+   opacity: 1;
+}
+
+
+
+/* Ensure Media Cards have a defined width or basis */
+.card-grid > * { /* Target direct children of card-grid (the MediaCards) */
+   flex-shrink: 0; /* Prevent cards from shrinking */
+   width: 180px; /* Example fixed width, adjust as needed */
+   /* or use flex-basis: 180px; */
+}

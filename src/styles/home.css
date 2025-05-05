@@ -1,0 +1,66 @@
+.center-panel {
+    padding: 24px;
+    overflow-y: auto;
+    background-color: #121212;
+    color: white;
+  }
+  
+  .section {
+    margin-bottom: 40px;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .section-header h2 {
+    font-size: 20px;
+  }
+  
+  .section-header a {
+    color: #b3b3b3;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+  }
+  
+  .media-card {
+    background-color: #181818;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .media-card:hover {
+    background-color: #282828;
+  }
+  
+  .media-card img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+  .media-card.round img {
+    border-radius: 50%;
+  }
+  
+  .media-card h5 {
+    margin: 8px 0 4px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .media-card p {
+    font-size: 12px;
+    color: #b3b3b3;
+  }
+  

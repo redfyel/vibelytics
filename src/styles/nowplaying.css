@@ -1,0 +1,303 @@
+/* src/styles/nowplaying.css */
+
+.now-playing-bar {
+  background-color: #181818; /* Spotify player background */
+  color: #ffffff;
+  height: 90px; /* Standard height */
+  width: 100%;
+  position: fixed; /* Or 'sticky' if relative to a container */
+  bottom: 0;
+  left: 0;
+  z-index: 101; /* Above header/content */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-top: 1px solid #282828; /* Subtle top border */
+  box-sizing: border-box;
+  font-family: "Circular Std", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Layout Sections */
+.now-playing-left,
+.now-playing-center,
+.now-playing-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Spacing between elements in each section */
+}
+
+.now-playing-left {
+  flex: 1 1 30%; /* Allow left section to grow/shrink, basis 30% */
+  justify-content: flex-start;
+  min-width: 180px; /* Prevent it from becoming too small */
+}
+
+.now-playing-center {
+  flex: 1 1 40%; /* Center takes up more space */
+  flex-direction: column; /* Stack controls and progress bar */
+  justify-content: center;
+  gap: 4px; /* Tighter gap for center elements */
+  max-width: 720px; /* Max width like Spotify */
+}
+
+.now-playing-right {
+  flex: 1 1 30%;
+  justify-content: flex-end;
+  min-width: 180px;
+}
+
+/* --- Left Section Elements --- */
+.album-art {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 4px; /* Slight rounding */
+  flex-shrink: 0; /* Prevent image shrinking */
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  overflow: hidden; /* Prevent text overflow issues */
+}
+
+.track-title,
+.artist-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default; /* Or pointer if clickable */
+}
+
+.track-title {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.artist-name {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 400;
+  color: #b3b3b3;
+}
+.track-info a:hover, /* If you make them links */
+.artist-name:hover {
+   text-decoration: underline;
+   color: #ffffff;
+}
+
+/* Like button */
+.like-button {
+  margin-left: 16px; /* Space after track info */
+}
+/* Add active state for like */
+.like-button.liked svg {
+   fill: var(--spotify-green, #1db954);
+   color: var(--spotify-green, #1db954);
+   opacity: 1;
+}
+
+
+/* --- Center Section Elements --- */
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Gap between main control buttons */
+}
+
+.control-button {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.1s ease-out, transform 0.1s ease-out;
+}
+.control-button:disabled {
+    color: #535353;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.control-button:not(:disabled):hover {
+  color: #ffffff;
+}
+
+.control-button.icon-only {
+  width: 32px; /* Standard icon button size */
+  height: 32px;
+}
+
+/* Smaller secondary controls (shuffle, repeat) */
+.secondary-control svg {
+  width: 18px;
+  height: 18px;
+}
+/* Active state for shuffle/repeat */
+.secondary-control.active {
+   color: var(--spotify-green, #1db954);
+}
+.secondary-control.active::after { /* Green dot indicator */
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--spotify-green, #1db954);
+    position: absolute;
+    bottom: 0px; /* Adjust position */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+/* Main Play/Pause button */
+.play-button {
+  background-color: #ffffff;
+  color: #000000;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.play-button:not(:disabled):hover {
+  transform: scale(1.06);
+  background-color: #f0f0f0;
+  color: #000000;
+}
+.play-button svg {
+  width: 16px; /* Smaller icon inside */
+  height: 16px;
+  /* Need slight adjustment for perfect centering */
+  position: relative;
+  left: 0.5px; /* Nudge play icon right */
+}
+.play-button svg:first-child[aria-label="pause"] { /* If using aria-label */
+   left: 0; /* No nudge for pause */
+}
+
+
+/* Playback Progress Bar */
+.playback-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.time-text {
+  font-size: 0.75rem; /* 12px */
+  color: #b3b3b3;
+  min-width: 40px; /* Ensure space for time */
+  text-align: center;
+  user-select: none; /* Prevent text selection */
+}
+
+.progress-bar-wrapper {
+  flex-grow: 1;
+  height: 12px; /* Interaction area height */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative; /* For handle positioning */
+}
+
+/* The background track of the progress bar */
+.progress-bar-wrapper::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 4px;
+    background-color: #535353; /* Darker grey track */
+    border-radius: 2px;
+}
+
+/* The actual progress indicator */
+.progress-bar {
+  height: 4px;
+  background-color: #b3b3b3; /* Subdued progress color */
+  border-radius: 2px;
+  position: relative;
+  transition: background-color 0.2s ease; /* Smooth color change on hover */
+}
+
+/* Green progress and handle visibility on hover */
+.progress-bar-wrapper:hover .progress-bar {
+  background-color: var(--spotify-green, #1db954);
+}
+.progress-bar-wrapper:hover .progress-handle {
+  opacity: 1;
+}
+
+/* The draggable handle (circle) */
+.progress-handle {
+  width: 12px;
+  height: 12px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  right: 0; /* Position at the end of the progress bar */
+  top: 50%;
+  transform: translate(50%, -50%); /* Center handle on the end */
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Slight shadow */
+}
+
+/* --- Right Section Elements --- */
+.now-playing-right {
+  gap: 16px; /* Standard gap for right controls */
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 125px; /* Fixed width for volume slider area */
+}
+
+.volume-control .control-button {
+    width: 32px; /* Ensure button size is consistent */
+    height: 32px;
+}
+
+.volume-control .progress-bar-wrapper {
+   width: 100%; /* Take remaining space in volume-control */
+}
+
+/* Placeholder/Empty State */
+.now-playing-bar.empty {
+    background-color: #181818;
+    /* Add styles to make it look disabled or minimal */
+}
+.now-playing-bar.empty .control-button {
+   color: #535353;
+   cursor: not-allowed;
+}
+.now-playing-bar.empty .play-button {
+   background-color: #535353;
+   color: #282828;
+}
+.now-playing-bar.empty .progress-bar {
+    background-color: #404040;
+}
+
+
+/* Add specific styles for loading state if needed */
+.now-playing-bar.loading {
+    justify-content: center;
+    color: #b3b3b3;
+}
+
+/* Define Spotify Green Variable */
+:root {
+    --spotify-green: #1DB954;
+}

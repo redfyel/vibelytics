@@ -1,0 +1,586 @@
+/* src/styles/header.css */
+.modal-content {
+  background-color: #121212;
+  color: #fff;
+  border-radius: 12px;
+}
+
+/* Mood Forecast Button Styling */
+.mood-forecast-btn {
+  padding: 10px !important;
+  background: transparent;
+  border: 2px solid transparent;
+  /* padding: 12px; */
+  border-radius: 50%;
+  transition: background 0.2s ease, transform 0.2s ease, border 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mood-forecast-btn:hover {
+  background-color: rgba(30, 215, 96, 0.15); /* Spotify green tint */
+  border: 2px solid #1ED760; /* Spotify green ring */
+  transform: scale(1.01); /* More prominent zoom */
+  cursor: pointer;
+  box-shadow: 0 0 6px #1ED76066; /* Soft glow */
+}
+
+/* Mood Icon Styling */
+.mood-icon {
+  width: 30px;
+  height: 30px;
+  filter: brightness(0) invert(1);
+  transition: filter 0.3s ease;
+}
+
+
+
+
+.spotify-header {
+  display: flex;
+  /* justify-content: space-between; Let flex properties handle distribution */
+  align-items: center;
+  padding: 12px 24px;
+  background-color: #101010;
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 64px;
+  box-sizing: border-box;
+  width: 100%;
+  font-family: 'CircularSp', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* --- Layout Groups --- */
+.header-left-group,
+.header-center-group,
+.header-user-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- Flex Distribution based on Login State --- */
+
+/* Logged Out Layout */
+.spotify-header.logged-out .header-left-group {
+  flex: 1 1 auto; /* Takes up most space */
+  justify-content: flex-start;
+  min-width: 0; /* Allow shrinking */
+}
+.spotify-header.logged-out .header-center-group {
+  display: none; /* Hide center group */
+}
+.spotify-header.logged-out .header-user-controls {
+  flex: 0 1 auto; /* Shrink to content width */
+  justify-content: flex-end;
+}
+
+/* Logged In Layout */
+.spotify-header.logged-in .header-left-group {
+  flex: 1 1 auto; /* Balance left and right */
+  justify-content: flex-start;
+  /* Only contains logo now */
+}
+.spotify-header.logged-in .header-center-group {
+  flex: 1 1 0; /* Allow it to grow and shrink as needed */
+  justify-content: center;
+  min-width: 300px;
+  max-width: 600px; /* Prevent it from becoming too large */
+}
+
+.spotify-header.logged-in .header-user-controls {
+  flex: 1 1 auto; /* Balance left and right */
+  justify-content: flex-end;
+}
+
+
+/* --- Specific Elements Styling (Mostly unchanged, but check context) --- */
+
+.header-logo-container {
+  width: auto;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+.header-logo-container img {
+  height: 80%;
+  width: auto;
+  display: block;
+}
+
+/* Icon Button Base Styles */
+.icon-btn {
+  background-color: transparent;
+  color: #b3b3b3;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+.icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+.icon-btn svg {
+  font-size: 20px;
+}
+
+/* Home Button Specific Style */
+.home-btn {
+  background-color: #282828; /* Permanent background */
+  color: #ffffff;
+}
+.home-btn:hover {
+  background-color: #3a3a3a;
+}
+
+/* Browse Button Specific Style */
+.browse-btn {
+  margin-left: -8px; /* Pull closer to input */
+}
+
+/* Search Container & Input */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%; /* Fill available space in parent flex group */
+  background-color: #242424;
+  border-radius: 500px;
+ 
+  transition: background-color 0.2s ease, box-shadow 0.1s ease;
+  min-width: 460px; /* Limit max width */
+}
+/* Different max-width based on location */
+/* .logged-out-search { max-width: 450px; }
+.logged-in-search { max-width: 500px; } */
+
+.search-container:hover {
+  background-color: #2a2a2a;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+.search-container:focus-within {
+  background-color: #2a2a2a;
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b3b3b3;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.search-input {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  height: 40px;
+  padding: 20px;
+  padding: 6px 12px 6px 44px; /* T R B L */
+  width: 100%;
+  font-size: 14px;
+  font-weight: 400;
+  box-sizing: border-box;
+  border-radius: 500px;
+  outline: none;
+}
+.search-input::placeholder {
+  color: #b3b3b3;
+  opacity: 1;
+}
+
+.browse {
+  width: 25px;
+}
+
+/* --- Right Side User Controls --- */
+
+/* Explore Premium Button */
+.explore-premium-btn {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 500px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.2s ease;
+  line-height: 1;
+  white-space: nowrap;
+}
+.explore-premium-btn:hover {
+  transform: scale(1.04);
+  background-color: #f0f0f0;
+}
+.header-link:hover{
+  color: #ffffff;
+  transform: scale(1.04);
+}
+/* Logged Out Specific Buttons */
+.signup-btn {
+  background-color: transparent;
+  color: #a7a7a7;
+  border: none;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.1s ease;
+  border-radius: 500px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.signup-btn:hover {
+  color: #ffffff;
+  transform: scale(1.04);
+}
+
+.login-btn {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 500px;
+  padding: 8px 24px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.2s ease;
+  line-height: 1;
+   white-space: nowrap;
+}
+.login-btn:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.04);
+}
+
+/* Logged In Specific: Avatar Button */
+.avatar-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avatar-btn:focus {
+    outline: none;
+}
+.avatar-btn:focus-visible {
+     box-shadow: 0 0 0 2px #ffffff;
+}
+
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #535353;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: transform 0.1s ease;
+}
+.avatar-btn:hover .avatar-circle {
+    transform: scale(1.1);
+}
+
+
+/* LOGGED OUT header adjustments */
+.spotify-header.logged-out {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  padding: 0.75rem 1.5rem;
+}
+
+.header-left-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-logo-container img {
+  height: 32px;
+}
+
+
+.header-user-controls.logged-out-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.675rem;
+}
+
+
+
+.header-link {
+  color: #b3b3b3;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.small-ins{
+  color: #b3b3b3;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.small-ins:hover {
+  color: white;
+  transform: scale(1.03);
+}
+
+.divider {
+  height: 16px;
+  width: 1px;
+  background-color: #b3b3b3;
+}
+
+.signup-btn {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-weight: bold;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.login-btn {
+  background-color: white;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.spotify-header {
+  /* ... other styles ... */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px; /* Adjust padding as needed */
+  background-color: #121212; /* Example background */
+  position: sticky; /* Make header sticky */
+  top: 0;
+  z-index: 100; /* Ensure header is above content */
+  height: 64px; /* Standard Spotify header height */
+}
+
+.header-left-group,
+.header-center-group,
+.header-user-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Spacing between items in groups */
+}
+
+.header-user-controls {
+  position: relative; /* Crucial for positioning the absolute menu */
+  gap: 8px; /* Adjust gap for logged-in controls */
+}
+
+/* Specific styles for logged-in controls */
+.header-user-controls.logged-in {
+  display: flex;
+  gap: 16px; 
+}
+
+/* Style for the profile button/menu wrapper */
+.profile-menu-area {
+  position: relative; /* Anchor point for the absolute menu */
+}
+
+.avatar-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #535353; /* Placeholder background */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.avatar-btn:hover .avatar-circle {
+  transform: scale(1.05);
+  background-color: #757575;
+}
+
+/* Premium Button */
+.explore-premium-btn {
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 500px;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+.explore-premium-btn:hover {
+  transform: scale(1.04);
+}
+
+/* Install App Button */
+.install-app-btn {
+  background-color: rgba(0, 0, 0, 0.7); /* Dark transparent */
+  color: white;
+  border: none;
+  border-radius: 500px;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: transform 0.1s ease;
+}
+.install-app-btn:hover {
+  transform: scale(1.04);
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+/* Icon buttons (Notifications) */
+.icon-btn {
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  color: #b3b3b3;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.icon-btn:hover {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+
+/* Logged out controls adjustments */
+.header-user-controls.logged-out-controls {
+    gap: 24px; /* Wider gap for logged out */
+}
+
+.logged-out-controls .header-link {
+    color: #a7a7a7;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.2s ease, transform 0.1s ease;
+    cursor: pointer; /* Indicate it's clickable */
+}
+.logged-out-controls .header-link:hover {
+    color: white;
+    transform: scale(1.03);
+}
+.logged-out-controls .separator {
+    color: #a7a7a7;
+}
+
+.logged-out-controls .signup-btn {
+    background: none;
+    border: none;
+    color: #a7a7a7;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.1s ease;
+}
+.logged-out-controls .signup-btn:hover {
+    color: white;
+    transform: scale(1.03);
+}
+
+.logged-out-controls .login-btn {
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 500px;
+    padding: 12px 32px; /* More padding */
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+.logged-out-controls .login-btn:hover {
+    transform: scale(1.04);
+}
+
+/* Remove the specific logged-out-search class if search is always centered */
+.search-container {
+  flex-grow: 1; /* Allow search to take space */
+  max-width: 360px; /* Limit max width */
+  /* position: absolute; */ /* Remove absolute positioning */
+  /* left: 50%; */
+  /* transform: translateX(-50%); */ /* Center it using flexbox in parent */
+  display: flex;
+  align-items: center;
+  background-color: #242424; /* Search background */
+  border-radius: 500px;
+  padding: 0 12px;
+  height: 40px; /* Search height */
+}
+.search-container .search-icon {
+  color: #b3b3b3;
+  margin-right: 8px;
+}
+.search-container .search-input {
+  background: none;
+  border: none;
+  outline: none;
+  color: white;
+  width: 100%;
+  font-size: 0.875rem;
+}
+.search-container .search-input::placeholder {
+  color: #b3b3b3;
+}
+
+
+/* Ensure left/right groups don't overlap center */
+.header-left-group {
+    flex-shrink: 0;
+}
+.header-user-controls {
+    flex-shrink: 0;
+}

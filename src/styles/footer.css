@@ -1,0 +1,122 @@
+/* src/styles/footer.css */
+
+.spotify-footer {
+    background-color: #000000; /* Black background */
+    color: #ffffff;            /* Default white text for headings */
+    padding: 80px 0 50px 0;   /* Generous top padding, less bottom */
+    font-family: 'CircularSp', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /* Assumes footer is placed within a container that handles horizontal padding/margins */
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between; /* Push socials to the right */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 20px; /* Gap between link container and socials */
+    max-width: 1170px; /* Max width consistent with Spotify */
+    margin: 0 auto;    /* Center the content */
+    padding: 0 15px;   /* Horizontal padding for smaller screens */
+    box-sizing: border-box;
+  }
+  
+  .footer-links-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow columns to wrap */
+    gap: 60px; /* Horizontal gap between columns */
+    flex-grow: 1; /* Allow link container to take available space */
+  }
+  
+  .footer-column {
+    min-width: 140px; /* Minimum width for each column */
+    /* flex: 1; /* Optional: Allow columns to grow equally */
+  }
+  
+  .footer-heading {
+    font-size: 16px; /* Match image font size */
+    font-weight: 700; /* Bold heading */
+    margin-top: 0;
+    margin-bottom: 20px; /* Space below heading */
+    color: #ffffff;
+  }
+  
+  .footer-list {
+    list-style: none; /* Remove default bullets */
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-list li {
+    margin-bottom: 15px; /* Space between links */
+  }
+  
+  .footer-list li:last-child {
+    margin-bottom: 0; /* No margin on the last item */
+  }
+  
+  .footer-list a {
+    color: #a7a7a7; /* Grey link color */
+    text-decoration: none;
+    font-size: 16px; /* Match image font size */
+    font-weight: 400;
+    transition: color 0.2s ease;
+  }
+  
+  .footer-list a:hover {
+    color: #ffffff;      /* White text on hover */
+    text-decoration: underline; /* Underline on hover */
+  }
+  
+  /* Social Icons Section */
+  .footer-socials {
+    display: flex;
+    gap: 15px; /* Space between icons */
+    align-items: flex-start; /* Align to the top */
+  }
+  
+  .social-icon-link {
+    display: inline-flex; /* Use inline-flex for proper alignment */
+    align-items: center;
+    justify-content: center;
+    width: 44px; /* Size of the circle */
+    height: 44px;
+    background-color: #222326; /* Dark grey background */
+    color: #ffffff;            /* White icon */
+    border-radius: 50%;       /* Make it a circle */
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+  
+  .social-icon-link:hover {
+    background-color: #727272; /* Lighter grey on hover */
+  }
+  
+  .social-icon-link svg {
+    font-size: 18px; /* Adjust icon size */
+  }
+  
+  
+  /* Divider Line */
+  .footer-divider {
+    border: none;
+    border-top: 1px solid #282828; /* Subtle grey line */
+    margin: 40px auto;            /* Space above/below, centered */
+    max-width: 1170px;            /* Match content width */
+    padding: 0 15px;              /* Match content padding */
+    box-sizing: content-box;      /* Prevent padding from adding to width */
+  }
+  
+  /* Bottom Copyright Section */
+  .footer-bottom {
+    max-width: 1170px; /* Match content width */
+    margin: 0 auto;    /* Center */
+    padding: 0 15px;   /* Match content padding */
+    box-sizing: border-box;
+  }
+  
+  .copyright-text {
+    color: #a7a7a7; /* Grey text */
+    font-size: 12px; /* Smaller font size */
+    margin: 0;
+  }

@@ -1,0 +1,5 @@
+/* Remove arrow */
+.tooltip .tooltip-arrow {
+    display: none !important;
+  }
+  

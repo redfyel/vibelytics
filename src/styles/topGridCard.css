@@ -1,0 +1,72 @@
+/* src/styles/topGridCard.css */
+.top-grid-card {
+  display: flex;
+  align-items: center;
+  background-color: hsla(0, 0%, 100%, .1); /* Semi-transparent white */
+  border-radius: 4px; /* Spotify's subtle radius */
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text-base, #ffffff);
+  transition: background-color 0.2s ease-out;
+  height: 56px; /* Slightly shorter than previous example, adjust as needed */
+  position: relative; /* For play button */
+  font-family: var(--spotify-font-family); /* Ensure font */
+}
+
+.top-grid-card:hover {
+  background-color: hsla(0, 0%, 100%, .2); /* Lighten on hover */
+}
+
+/* Show play button on hover */
+.top-grid-card:hover .play-button {
+  opacity: 1;
+  transform: translateY(0); /* Move into view */
+}
+
+.top-grid-card-image {
+  width: 56px; /* Square image */
+  height: 56px;
+  object-fit: cover;
+  flex-shrink: 0;
+  /* No border-radius needed if parent clips */
+  background-color: #333; /* Placeholder */
+}
+
+.top-grid-card-title {
+  flex-grow: 1;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 700; /* Bold title */
+  padding: 0 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Play Button (Initially hidden/off-screen) */
+.top-grid-card .play-button {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  background-color: #1ed760; /* Spotify green */
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+  opacity: 0;
+  transform: translateY(10px); /* Start slightly below */
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  cursor: pointer;
+  z-index: 2; /* Above other content */
+}
+.top-grid-card .play-button:hover {
+   transform: scale(1.06); /* Scale effect */
+}
+.top-grid-card .play-button svg {
+    position: relative;
+    left: 1px; /* Nudge play icon */
+}

@@ -1,0 +1,186 @@
+/* src/styles/centralPanel.css */
+
+/* --- Base & Variables --- */
+:root {
+  /* Define colors if not done globally */
+  --text-base: #ffffff;
+  --text-subdued: #b3b3b3;
+  --text-press: #a7a7a7;
+  --bg-base: #121212;
+  --bg-section: #121212; /* Or keep slightly different if needed */
+  --bg-elevated-base: #1a1a1a;
+  --bg-elevated-highlight: #2a2a2a;
+  --bg-highlight-subtle: rgba(255, 255, 255, 0.1);
+  --bg-highlight-medium: rgba(255, 255, 255, 0.2);
+  --bg-chip: #232323;
+  --bg-chip-active: #ffffff;
+  --text-chip-active: #000000;
+  --essential-subdued: #727272;
+  /* Define font stack if not done globally */
+  --fallback-fonts: Helvetica Neue, helvetica, arial, sans-serif; /* Simplified */
+  --spotify-font-family: "CircularSp Title", "CircularSp", "Circular Std", var(--fallback-fonts);
+}
+
+/* --- Main Panel Structure --- */
+.center-panel {
+  padding: 0; /* No padding on the main container */
+  box-sizing: border-box;
+  height: 100%; /* Fill available height */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* CRITICAL: Prevent this container from scrolling */
+  font-family: var(--spotify-font-family); /* Apply default font */
+  background-color: var(--bg-base); /* Base background, gradient applied to top bar */
+}
+
+.center-panel.logged-in-view {
+  /* Styles specific to logged-in view base if needed */
+}
+
+/* --- Top Bar (Sticky Greeting + Filters) --- */
+.center-panel-top-bar {
+  padding: 16px 24px 8px 24px;
+  /* Gradient background */
+  background: linear-gradient(to bottom, #222222 0%, var(--bg-base) 150px);
+  position: sticky; /* Stick to top of the panel */
+  top: 0;
+  z-index: 95; /* Ensure it's above scrolling content */
+  flex-shrink: 0; /* Prevent top bar from shrinking */
+}
+
+.greeting {
+  font-size: 2rem; /* 32px */
+  font-weight: 700;
+  color: var(--text-base);
+  margin: 0 0 16px 0;
+  line-height: 1.2; /* Adjust line height */
+}
+
+/* Filter Chips Container */
+.filter-chips-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.filter-chip {
+  background-color: var(--bg-chip);
+  color: var(--text-base);
+  border: none;
+  border-radius: 500px;
+  padding: 6px 12px;
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.filter-chip:hover {
+  background-color: var(--bg-elevated-highlight);
+}
+.filter-chip.active {
+  background-color: var(--bg-chip-active);
+  color: var(--text-chip-active);
+}
+
+/* --- Top Grid Section --- */
+.top-grid-section {
+  padding: 16px 24px; /* Padding for the grid section itself */
+  margin-top: -8px; /* Pull up slightly below sticky bar */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+.top-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+}
+/* Styles for TopGridCard should be in topGridCard.css */
+
+
+/* --- Main Scrolling Sections Area --- */
+.center-panel-sections {
+  padding: 16px 24px; /* Padding for the scrolling content area */
+  flex-grow: 1; /* Take remaining vertical space */
+  overflow-y: auto; /* CRITICAL: This container scrolls */
+  min-height: 0; /* Fix for flexbox scrolling */
+}
+
+/* --- Section Styles --- */
+.spotify-section {
+  margin-bottom: 32px;
+  position: relative; /* For potential absolute elements like arrows */
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  /* No padding needed here */
+}
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-base);
+  letter-spacing: -0.02em;
+}
+.title-link { /* Style if section title is a link */
+  color: inherit;
+  text-decoration: none;
+}
+.title-link:hover {
+  text-decoration: underline;
+}
+.show-all-link {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-subdued);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px; /* Add padding for easier clicking */
+}
+.show-all-link:hover {
+  color: var(--text-base);
+  text-decoration: underline;
+}
+.section-content { /* Wrapper for horizontal cards if needed */
+  position: relative;
+}
+.card-grid { /* Horizontal scroll container */
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 4px 0 10px 0; /* Add some vertical padding, bottom for shadows */
+  margin-bottom: -10px;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+}
+.card-grid::-webkit-scrollbar { display: none; } /* Webkit */
+.card-grid > * {
+  flex-shrink: 0;
+  width: 180px; /* Example MediaCard width */
+}
+/* ... (Scroll Arrow styles for .card-grid if implemented) ... */
+
+
+/* --- Error Message Styling --- */
+.center-panel .error-message {
+  color: #f15e6c;
+  background-color: rgba(241, 94, 108, 0.1);
+  border: 1px solid rgba(241, 94, 108, 0.3);
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 16px 0; /* Margin within the scrolling area */
+}
+.center-panel .partial-error {
+  margin-bottom: 24px;
+}
+
+/* --- Footer --- */
+/* Footer styles should be imported or defined if Footer is rendered inside .center-panel-sections */
+.center-panel-sections .site-footer { /* Example selector */
+   margin-top: 32px; /* Space above footer */
+   padding-bottom: 16px; /* Extra space at the very bottom */
+}

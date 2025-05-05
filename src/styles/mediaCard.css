@@ -1,0 +1,108 @@
+/* src/styles/mediaCard.css */
+
+.media-card {
+    background-color: #181818; /* Card background */
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    position: relative; /* Needed for absolute positioning of play button */
+    overflow: hidden; /* Hide overflowing parts of play button initially */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    min-height: 250px; /* Ensure cards have minimum height */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .media-card:hover {
+    background-color: #282828; /* Slightly lighter on hover */
+  }
+  
+  .card-image-container {
+    position: relative; /* Context for the play button */
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); /* Shadow for image depth */
+    border-radius: 6px; /* Default slightly rounded for albums/songs */
+  }
+  
+  .card-image {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    aspect-ratio: 1 / 1; /* Force square aspect ratio */
+    object-fit: cover; /* Cover the area */
+    display: block;
+    border-radius: inherit; /* Inherit from container */
+  }
+  
+  /* Artist Specific Image Styling */
+  .artist-card .card-image-container {
+    border-radius: 50%; /* Make container round */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Different shadow for artists */
+  }
+  .artist-card .card-image.round-image {
+    border-radius: 50%; /* Make image itself round */
+  }
+  
+  
+  .card-text {
+    flex-grow: 1; /* Allow text area to grow if needed */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-title {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis (...) if text overflows */
+  }
+  
+  .card-subtitle {
+    color: #b3b3b3;
+    font-size: 14px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1; /* Pushes title up if subtitle is short */
+  }
+  
+  /* Play Button Styling */
+  .m-play-button {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 48px; /* Spotify's standard play button size */
+    height: 48px;
+    background-color: #1db954; /* Spotify Green */
+    color: #000000; /* Black icon */
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0; /* Hidden by default */
+    transform: translateY(8px); /* Start slightly lower */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for the button */
+    z-index: 2; /* Ensure it's above the image */
+  }
+  
+  .media-card:hover .m-play-button {
+    opacity: 1; /* Show on hover */
+    transform: translateY(0); /* Move to final position */
+  }
+  
+  .m-play-button svg {
+    font-size: 20px;
+    margin-left: 2px; /* Slight offset for visual centering of play icon */
+  }
+  
+  /* Don't show play button on artist cards if not desired */
+  /* .artist-card .m-play-button {
+    display: none;
+  } */

@@ -1,0 +1,42 @@
+.right-controls-wrapper .right-controls {
+    display: flex;
+    align-items: center;
+    background-color: #121212;
+    color: #B3B3B3;
+    gap: 10px;
+  }
+  
+  .right-controls-wrapper .icon-btn {
+    color: #B3B3B3;
+    padding: 2px;
+    border: none;
+    background: none;
+    transition: color 0.2s ease;
+  }
+  
+  .right-controls-wrapper .icon-btn:hover {
+    color: #FFFFFF;
+  }
+  
+  .right-controls-wrapper .icon-btn.active {
+    color: #1ED760;
+  }
+  
+  .right-controls-wrapper .volume-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .right-controls-wrapper .volume-icon {
+    color: #B3B3B3;
+  }
+  
+  .right-controls-wrapper .volume-slider {
+    width: 70px;
+    height: 4px;
+    background: transparent;
+    accent-color: #1ED760;
+    cursor: pointer;
+  }
+  

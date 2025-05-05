@@ -1,0 +1,63 @@
+/* src/styles/homeLayout.css */
+
+.home-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Prevent BODY scroll */
+  background-color: #000;
+}
+
+.main-content-wrapper {
+  display: flex;
+  flex-grow: 1; /* Take remaining vertical space */
+  overflow: hidden; /* Prevent this wrapper from scrolling */
+  position: relative; /* Context for resizer/absolute elements */
+  min-height: 0; /* Crucial for flex children inside flex parents */
+}
+
+.sidebar-container {
+  /* width is controlled by inline style */
+  flex-shrink: 0;
+  /* REMOVE overflow-y: auto; - Scrolling should happen *inside* the sidebar if needed */
+  background-color: #000;
+  height: 100%; /* Match parent height */
+  position: relative;
+  display: flex; /* To allow internal flex layout */
+  min-height: 0; /* Crucial for flex children */
+}
+
+/* --- Resizer Handle --- */
+.resizer {
+  flex-shrink: 0;
+  width: 5px;
+  background-color: #282828;
+  cursor: col-resize;
+  height: 100%;
+  transition: background-color 0.2s ease;
+  z-index: 50; /* Ensure it's above adjacent content */
+  position: relative; /* Or absolute if needed relative to wrapper */
+  /* Ensure it's actually clickable (no elements overlapping it) */
+}
+.resizer:hover {
+  background-color: #535353;
+}
+
+.center-panel-container {
+  flex-grow: 1;
+  overflow-y: auto; /* THIS is where the main content scroll should happen */
+  background-color: #121212; /* Base color */
+  position: relative;
+  padding-bottom: 0; /* Default no padding */
+  transition: padding-bottom 0.3s ease;
+  min-height: 0; /* Crucial for flex children */
+  /* The gradient background is now applied in centralPanel.css */
+}
+
+/* Adjust padding when player is visible */
+.home-layout.player-visible .center-panel-container {
+   padding-bottom: 100px; /* Height of NowPlaying bar + gap */
+}
+
+/* Ensure header doesn't break layout */
+/* Header styles should be defined in header.css */

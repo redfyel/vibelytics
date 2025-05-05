@@ -1,0 +1,18 @@
+/* src/styles/global.css */
+:root{
+  --fallback-fonts: Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic ProN, Meiryo, MS Gothic;
+  --spotify-font-family: "Circular Std", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    
+}
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #000000;
+    color: #FFFFFF;
+    margin: 0;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  

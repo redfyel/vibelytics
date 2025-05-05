@@ -1,0 +1,19 @@
+/* src/styles/songlist.css */
+.song-list {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .song-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .song-card {
+    width: 250px;
+  }
+  

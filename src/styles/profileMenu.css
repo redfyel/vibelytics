@@ -1,0 +1,99 @@
+/* src/styles/profileMenu.css */
+
+/* Define Spotify's font stack as a variable (optional but good practice) */
+:root {
+    --spotify-font-family: "Circular Std", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  
+  .profile-menu-container {
+    position: absolute;
+    top: calc(100% + 8px); /* Position below the header button */
+    right: 0;
+    background-color: #282828; /* Spotify's standard dark dropdown background */
+    color: #ffffff; /* Default text color (mostly overridden by items) */
+    border-radius: 4px; /* Standard Spotify radius */
+    box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3), 0 6px 8px rgba(0, 0, 0, 0.2); /* Spotify-like shadow */
+    min-width: 180px; /* Or adjust based on content */
+    z-index: 1000;
+    padding: 4px 0; /* Vertical padding for the container */
+    overflow: hidden;
+    font-family: var(--spotify-font-family); /* Apply Spotify font */
+    -webkit-font-smoothing: antialiased; /* Smoother font rendering */
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .profile-menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .profile-menu-list li {
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Style for both links and buttons inside list items */
+  .profile-menu-list li a,
+  .profile-menu-list li button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 12px; /* Adjusted padding (slightly tighter) */
+    text-align: left;
+    background: none;
+    border: none;
+    color: #b3b3b3; /* Spotify's standard subdued text color */
+    font-family: inherit; /* Inherit from container */
+    font-size: 0.875rem; /* 14px */
+    font-weight: 400; /* Standard weight */
+    line-height: 1.4; /* Ensure consistent line height */
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.1s ease-out, color 0.1s ease-out;
+  }
+  
+  .profile-menu-list li a:hover,
+  .profile-menu-list li button:hover {
+    background-color: #3e3e3e; 
+    color: #ffffff; 
+    text-decoration: underline;
+  }
+  
+  /* Text part of the menu item */
+  .profile-menu-list li a span,
+  .profile-menu-list li button span {
+    flex-grow: 1;
+    margin-right: 8px; /* Space between text and potential icon */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis if text is too long */
+  }
+  
+  /* Icon part of the menu item (if present) */
+  .profile-menu-list li a svg,
+  .profile-menu-list li button svg {
+    flex-shrink: 0;
+    color: inherit; /* Icon color matches text */
+    opacity: 0.7; /* Slightly dim icon */
+    transition: opacity 0.1s ease-out;
+  }
+  
+  .profile-menu-list li a:hover svg,
+  .profile-menu-list li button:hover svg {
+     opacity: 1; /* Full opacity icon on hover */
+  }
+  
+  
+  /* Style for the separator line */
+  .profile-menu-list li.separator {
+    height: 1px;
+    background-color: #3e3e3e; /* Spotify often uses the hover color or slightly darker */
+    margin: 4px 0; /* Space around the separator */
+    padding: 0;
+    cursor: default; /* Separator isn't clickable */
+  }
+  .profile-menu-list li.separator:hover {
+      background-color: #3e3e3e; /* Keep separator color static */
+  }
