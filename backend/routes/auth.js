@@ -148,5 +148,57 @@ router.post('/refresh', async (req, res) => {
   }
 });
 
+router.post('/api/auth/exchange-token', async (req, res) => {
+  const { code, verifier } = req.body;
+
+  if (!code || !verifier) {
+    return res.status(400).json({ message: 'Missing code or verifier in request body' });
+  }
+
+  const spotifyTokenUrl = 'https://accounts.spotify.com/api/token';
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const redirectUri = process.env.REDIRECT_URI; // Use the one from backend env
+
+  const payload = new URLSearchParams({
+    client_id: clientId,
+    grant_type: 'authorization_code',
+    code: code,
+    redirect_uri: redirectUri,
+    code_verifier: verifier,
+  });
+
+  try {
+    const spotifyResponse = await fetch(spotifyTokenUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: payload,
+    });
+
+    const tokenData = await spotifyResponse.json();
+
+    if (!spotifyResponse.ok) {
+      console.error('Spotify Token API Error:', tokenData);
+      return res.status(spotifyResponse.status).json({
+        message: 'Failed to exchange code with Spotify',
+        error: tokenData.error,
+        error_description: tokenData.error_description
+      });
+    }
+
+    // Send tokens back to the frontend
+    res.status(200).json({
+      access_token: tokenData.access_token,
+      refresh_token: tokenData.refresh_token,
+      expires_in: tokenData.expires_in,
+    });
+
+  } catch (error) {
+    console.error('Internal Server Error during token exchange:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 export default router;
