@@ -36,19 +36,12 @@ router.get('/featured-charts', wrap(async (req, res) => {
 }));
 
 router.get('/indias-best', async (req, res) => {
-    console.log("ROUTE: GET /indias-best triggered"); // Log when the route is hit
+    // console.log("ROUTE: GET /indias-best triggered"); 
     try {
-        // Call the service function which now has internal error handling
         const data = await getIndiasBest();
-
-        // The service function returns [] on error, so we just send the result.
-        // The service function handles logging the specific Spotify API error.
         res.status(200).json(data);
 
     } catch (error) {
-        // This catch block handles errors *outside* the Spotify API call itself
-        // (e.g., issues within the getIndiasBest function before the try/catch,
-        // or problems getting the access token if that fails unexpectedly).
         console.error("ROUTE ERROR: /indias-best - Unhandled exception in route:", error);
         res.status(500).json({ error: 'Internal server error while processing India\'s Best request' });
     }
