@@ -55,18 +55,22 @@ const LoginPage = () => {
     }
   };
 
-  return (
-    <div className="login-page">
-      <div className="login-container">
-        <h1 className="login-title">Welcome to Vibelytics</h1> {/* Updated Title */}
-        <p className="login-description">Log in with Spotify to analyze your vibes</p> {/* Updated Desc */}
-        {error && <p className="login-error">{error}</p>} {/* Display errors */}
-        <button className="login-button" onClick={handleLogin} disabled={loading}>
-          {loading ? 'Redirecting to Spotify...' : 'Log in with Spotify'}
-        </button>
-      </div>
+ return (
+  <div className="flex items-center justify-center min-h-screen bg-[#121212] text-white">
+    <div className="text-center p-8 rounded-lg shadow-lg max-w-md w-full bg-[#1a1a1a]">
+      <h1 className="text-3xl font-bold mb-4">Welcome to <span className="text-[#1ED760]">Vibelytics</span></h1>
+      <p className="mb-6 text-gray-300">Log in with Spotify to analyze your weekly vibes</p>
+      {error && <p className="mb-4 text-red-500">{error}</p>}
+      <button
+        className="w-full bg-[#1ED760] hover:bg-[#1fdf64] text-black font-semibold py-3 px-6 rounded-full transition-all duration-200"
+        onClick={handleLogin}
+        disabled={loading}
+      >
+        {loading ? 'Redirecting to Spotify...' : 'Log in with Spotify'}
+      </button>
     </div>
-  );
-};
+  </div>
+);
+
 
 export default LoginPage;
